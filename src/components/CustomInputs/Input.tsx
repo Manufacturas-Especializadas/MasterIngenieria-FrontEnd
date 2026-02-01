@@ -1,24 +1,42 @@
-import { useState, type InputHTMLAttributes } from "react";
+import { type InputHTMLAttributes } from "react";
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
 }
 
 export const Input = ({ label, ...props }: Props) => {
-  const [isFocused, setIsFocused] = useState(false);
-  const hasValue = props.value !== "";
-
-  const labelShrinkClass =
-    isFocused || hasValue
-      ? "text-blue-600 -translate-y-4 scale-75 top2"
-      : "text-gray-500 translate-y-0 scael-100 top-4";
-
   return (
     <div
-      className="relative w-full bg-gray-50 
-      border-b-2 border-gray-300 in-focus-within:border-blue-600"
+      className="relative w-full bg-gray-50 border-b border-gray-300 
+      focus-within:border-blue-600 transition-colors duration-300"
     >
-      Input
+      <input
+        {...props}
+        placeholder=" "
+        className="peer block px-4 pb-1.5 pt-5 w-full text-sm text-gray-900 
+        bg-transparent border-0 appearance-none focus:outline-none focus:ring-0"
+      />
+      <label
+        className="
+          absolute left-4 top-3.5 z-10 origin-left pointer-events-none
+          transform transition-all duration-300 text-gray-500 text-sm
+
+          peer-placeholder-shown:scale-100 
+          peer-placeholder-shown:translate-y-0
+
+          peer-focus:-translate-y-3.5 
+          peer-focus:scale-90 
+          peer-focus:text-blue-600
+          peer-focus:top-3
+
+          peer-not-placeholder-shown:-translate-y-3.5
+          peer-not-placeholder-shown:scale-90
+          peer-not-placeholder-shown:text-blue-600
+          peer-not-placeholder-shown:top-3
+        "
+      >
+        {label}
+      </label>
     </div>
   );
 };
