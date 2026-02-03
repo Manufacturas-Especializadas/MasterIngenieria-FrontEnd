@@ -8,7 +8,7 @@ export const Navbar = () => {
         <div className="flex items-center justify-between h-14">
           <Link to="/" className="flex items-center gap-3">
             <img src={Logo} alt="MESA" className="h-8 w-auto" />
-            <span className="text-sm font-semibold tracking-wide text-white">
+            <span className="text-sm font-semibold tracking-wide text-white uppercase">
               Master Ingeniería
             </span>
           </Link>
