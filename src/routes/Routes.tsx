@@ -1,10 +1,10 @@
 import { Route, Routes } from "react-router-dom";
-import { HomeIndex } from "../pages/Home/HomeIndex";
+import { PartNumbersByProcessIndex } from "../pages/PartNumbersByProcess/PartNumbersByProcessIndex";
 
 export const MyRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<HomeIndex />} />
+      <Route path="/" element={<PartNumbersByProcessIndex />} />
     </Routes>
   );
 };
