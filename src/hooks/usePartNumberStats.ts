@@ -13,8 +13,9 @@ export const usePartNumberStats = () => {
 
       const response = await partNumbersByProcessService.getDashboardStats();
 
+      console.log("Datos: ", response);
       const sortedStats = [...response.statsByProcess].sort(
-        (a, b) => b.partes - a.partes,
+        (a, b) => b.nPartes - a.nPartes,
       );
       setData({
         ...response,
