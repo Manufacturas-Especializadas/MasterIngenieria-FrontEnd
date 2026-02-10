@@ -4,7 +4,7 @@ import { apiClient } from "../client";
 
 class PartNumbersByProcessService {
   private getParentPartNumbersDashboardStatsEndpoint =
-    API_CONFIG.endpoints.partNumberByProcess.dashboardStats;
+    API_CONFIG.endpoints.parentPartNumberByProcess.dashboardStats;
 
   async getParentPartNumbersDashboardStats(): Promise<DashboardStats> {
     return apiClient.get<DashboardStats>(
