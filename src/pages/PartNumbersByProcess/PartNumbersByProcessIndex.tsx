@@ -7,12 +7,12 @@ import {
 } from "lucide-react";
 import { KpiCard } from "../../components/KpiCard/KpiCard";
 import { DistributionBarChart } from "../../components/ProcessCharts/ProcessCharts";
-import { usePartNumberStats } from "../../hooks/usePartNumberStats";
+import { useParentPartNumberStats } from "../../hooks/useParentPartNumberStats";
 import { LoadingSkeleton } from "../../components/LoadingSkeleton/LoadingSkeleton";
 import { ErrorState } from "../../components/ErrorState/ErrorState";
 
 export const PartNumbersByProcessIndex = () => {
-  const { data, loading, error, refresh } = usePartNumberStats();
+  const { data, loading, error, refresh } = useParentPartNumberStats();
 
   if (loading) return <LoadingSkeleton />;
   if (error) return <ErrorState message={error} onRetry={refresh} />;

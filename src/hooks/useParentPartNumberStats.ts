@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import type { DashboardStats } from "../types/Types";
 import { partNumbersByProcessService } from "../api/services/PartNumbersByProcessService";
 
-export const usePartNumberStats = () => {
+export const useParentPartNumberStats = () => {
   const [data, setData] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
