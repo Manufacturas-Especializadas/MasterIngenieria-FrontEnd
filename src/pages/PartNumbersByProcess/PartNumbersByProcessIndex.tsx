@@ -1,5 +1,3 @@
-import { useState } from "react";
-import type { ProcessData } from "../../types/Types";
 import {
   Activity,
   AlertCircle,
@@ -13,16 +11,25 @@ import {
   DistributionBarChart,
   ProductionPieChart,
 } from "../../components/ProcessCharts/ProcessCharts";
-
-const MOCK_DATA: ProcessData[] = [
-  { name: "Estampado", partes: 420, efficiency: 88 },
-  { name: "Soldadura", partes: 310, efficiency: 91 },
-  { name: "Empaque", partes: 240, efficiency: 75 },
-  { name: "Ensamble", partes: 515, efficiency: 96 },
-];
+import { usePartNumberStats } from "../../hooks/usePartNumberStats";
 
 export const PartNumbersByProcessIndex = () => {
-  const [data] = useState<ProcessData[]>(MOCK_DATA);
+  const { data, loading, error, refresh } = usePartNumberStats();
+
+  if (loading) return "";
+  if (error) return "";
+
+  const topProcessesByVolume = data?.statsByProcess.slice(0, 10) || [];
+  const topProcessesByEfficiency = [...(data?.statsByProcess || [])]
+    .sort((a, b) => b.efficiency - a.efficiency)
+    .slice(0, 6);
+
+  const avgEfficiency = data?.statsByProcess.length
+    ? (
+        data.statsByProcess.reduce((acc, curr) => acc + curr.efficiency, 0) /
+        data.statsByProcess.length
+      ).toFixed(1)
+    : "0";
 
   return (
     <div className="bg-slate-50 min-h-screen">
@@ -56,40 +63,40 @@ export const PartNumbersByProcessIndex = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <KpiCard
           title="Total N/P"
-          value="1,485"
+          value={data?.totalPartNumber.toLocaleString() || "0"}
           icon={<Package size={20} />}
-          trend="+12%"
+          trend="Global"
           trendColor="text-blue-600"
         />
         <KpiCard
           title="Eficiencia"
-          value="92.1%"
+          value={`${avgEfficiency}`}
           icon={<Activity size={20} />}
-          trend="Óptimo"
+          trend="Actual"
           trendColor="text-green-600"
         />
         <KpiCard
-          title="En Proceso"
-          value="842"
+          title="Mayor Carga"
+          value={topProcessesByVolume[0]?.partes.toLocaleString() || "0"}
           icon={<Settings size={20} />}
-          trend="-5%"
+          trend={topProcessesByVolume[0]?.name.substring(0, 10) + "..."}
           trendColor="text-amber-600"
         />
         <KpiCard
-          title="Rechazos"
-          value="14"
+          title="Procesos"
+          value={data?.statsByProcess.length || 0}
           icon={<AlertCircle size={20} />}
-          trend="Critico"
+          trend="Activos"
           trendColor="text-red-600"
         />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
-          <DistributionBarChart data={data} />
+          <DistributionBarChart data={topProcessesByVolume} />
         </div>
         <div className="lg:col-span-1">
-          <ProductionPieChart data={data} />
+          <ProductionPieChart data={topProcessesByEfficiency} />
         </div>
       </div>
     </div>
