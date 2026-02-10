@@ -23,3 +23,8 @@ export interface ProcessStats {
   partes: string;
   efficiency: string;
 }
+
+export interface DashboardStats {
+  totalPartNumber: number;
+  statsByProcess: ProcessStats[];
+}
