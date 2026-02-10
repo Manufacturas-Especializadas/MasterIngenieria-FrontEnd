@@ -51,7 +51,7 @@ export const PartNumbersByProcessIndex = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
         <KpiCard
           title="Total N/P"
-          value={data?.totalPartNumber.toLocaleString() || "0"}
+          value={data?.totalPartNumber?.toLocaleString() || "0"}
           icon={<Package size={20} />}
           trend="Global"
           trendColor="text-blue-600"
@@ -59,9 +59,13 @@ export const PartNumbersByProcessIndex = () => {
 
         <KpiCard
           title="Mayor Carga"
-          value={topProcessesByVolume[0]?.partes.toLocaleString() || "0"}
+          value={topProcessesByVolume[0]?.nPartes?.toLocaleString() ?? "0"}
           icon={<Settings size={20} />}
-          trend={topProcessesByVolume[0]?.name.substring(0, 10) + "..."}
+          trend={
+            topProcessesByVolume[0]?.name
+              ? `${topProcessesByVolume[0].name.substring(0, 10)}...`
+              : "N/A"
+          }
           trendColor="text-amber-600"
         />
         <KpiCard

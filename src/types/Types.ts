@@ -6,7 +6,7 @@ export type TrendColor =
 
 export interface ProcessData {
   name: string;
-  partes: number;
+  nPartes: number;
   efficiency: number;
 }
 
@@ -20,7 +20,7 @@ export interface KpiProps {
 
 export interface ProcessStats {
   name: string;
-  partes: number;
+  nPartes: number;
   efficiency: number;
 }
 

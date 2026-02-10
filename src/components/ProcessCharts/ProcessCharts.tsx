@@ -71,7 +71,7 @@ export const DistributionBarChart: React.FC<ChartProps> = ({ data }) => (
             }}
           />
           <Bar
-            dataKey="partes"
+            dataKey="nPartes"
             fill="#004A99"
             radius={[0, 4, 4, 0]}
             barSize={20}
@@ -98,7 +98,7 @@ export const ProductionPieChart: React.FC<ChartProps> = ({ data }) => {
               innerRadius={60}
               outerRadius={90}
               paddingAngle={2}
-              dataKey="partes"
+              dataKey="nPartes"
               nameKey="name"
             >
               {displayData.map((_, index) => (
