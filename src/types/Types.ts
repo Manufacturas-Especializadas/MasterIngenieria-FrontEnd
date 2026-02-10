@@ -20,8 +20,8 @@ export interface KpiProps {
 
 export interface ProcessStats {
   name: string;
-  partes: string;
-  efficiency: string;
+  partes: number;
+  efficiency: number;
 }
 
 export interface DashboardStats {
