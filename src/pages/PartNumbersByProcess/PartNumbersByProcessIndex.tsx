@@ -1,5 +1,4 @@
 import {
-  Activity,
   AlertCircle,
   FileDown,
   Package,
@@ -7,29 +6,18 @@ import {
   Settings,
 } from "lucide-react";
 import { KpiCard } from "../../components/KpiCard/KpiCard";
-import {
-  DistributionBarChart,
-  ProductionPieChart,
-} from "../../components/ProcessCharts/ProcessCharts";
+import { DistributionBarChart } from "../../components/ProcessCharts/ProcessCharts";
 import { usePartNumberStats } from "../../hooks/usePartNumberStats";
+import { LoadingSkeleton } from "../../components/LoadingSkeleton/LoadingSkeleton";
+import { ErrorState } from "../../components/ErrorState/ErrorState";
 
 export const PartNumbersByProcessIndex = () => {
   const { data, loading, error, refresh } = usePartNumberStats();
 
-  if (loading) return "";
-  if (error) return "";
+  if (loading) return <LoadingSkeleton />;
+  if (error) return <ErrorState message={error} onRetry={refresh} />;
 
   const topProcessesByVolume = data?.statsByProcess.slice(0, 10) || [];
-  const topProcessesByEfficiency = [...(data?.statsByProcess || [])]
-    .sort((a, b) => b.efficiency - a.efficiency)
-    .slice(0, 6);
-
-  const avgEfficiency = data?.statsByProcess.length
-    ? (
-        data.statsByProcess.reduce((acc, curr) => acc + curr.efficiency, 0) /
-        data.statsByProcess.length
-      ).toFixed(1)
-    : "0";
 
   return (
     <div className="bg-slate-50 min-h-screen">
@@ -60,7 +48,7 @@ export const PartNumbersByProcessIndex = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
         <KpiCard
           title="Total N/P"
           value={data?.totalPartNumber.toLocaleString() || "0"}
@@ -68,13 +56,7 @@ export const PartNumbersByProcessIndex = () => {
           trend="Global"
           trendColor="text-blue-600"
         />
-        <KpiCard
-          title="Eficiencia"
-          value={`${avgEfficiency}`}
-          icon={<Activity size={20} />}
-          trend="Actual"
-          trendColor="text-green-600"
-        />
+
         <KpiCard
           title="Mayor Carga"
           value={topProcessesByVolume[0]?.partes.toLocaleString() || "0"}
@@ -91,12 +73,9 @@ export const PartNumbersByProcessIndex = () => {
         />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="lg:col-span-2">
           <DistributionBarChart data={topProcessesByVolume} />
-        </div>
-        <div className="lg:col-span-1">
-          <ProductionPieChart data={topProcessesByEfficiency} />
         </div>
       </div>
     </div>
