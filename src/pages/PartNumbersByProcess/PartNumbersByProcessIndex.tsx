@@ -20,7 +20,7 @@ export const PartNumbersByProcessIndex = () => {
   const topProcessesByVolume = data?.statsByProcess.slice(0, 10) || [];
 
   return (
-    <div className="bg-slate-50 min-h-screen">
+    <div className="p-4 bg-slate-50 min-h-screen">
       <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-slate-800 tracking-tight">

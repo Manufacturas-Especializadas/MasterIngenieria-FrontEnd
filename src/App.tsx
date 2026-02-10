@@ -6,7 +6,7 @@ export const App = () => {
   return (
     <BrowserRouter>
       <Navbar />
-      <main className="p-2">
+      <main>
         <MyRoutes />
       </main>
     </BrowserRouter>
