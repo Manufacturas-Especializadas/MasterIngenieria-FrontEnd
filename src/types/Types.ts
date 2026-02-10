@@ -17,3 +17,9 @@ export interface KpiProps {
   trend: string;
   trendColor: TrendColor;
 }
+
+export interface ProcessStats {
+  name: string;
+  partes: string;
+  efficiency: string;
+}
