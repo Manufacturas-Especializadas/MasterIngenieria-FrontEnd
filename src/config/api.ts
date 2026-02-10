@@ -8,7 +8,8 @@ export const API_CONFIG = {
   baseUrl: API_BASE_URL,
   endpoints: {
     partNumbersByProcess: {
-      dashboardStats: "/api/PartNumbersByProcess/Dashboard-parentPartNumbers",
+      getParentPartNumbers:
+        "/api/PartNumbersByProcess/Dashboard-parentPartNumbers",
     },
   },
 };
