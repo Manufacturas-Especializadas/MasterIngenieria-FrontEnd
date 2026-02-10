@@ -17,7 +17,8 @@ export const PartNumbersByProcessIndex = () => {
   if (loading) return <LoadingSkeleton />;
   if (error) return <ErrorState message={error} onRetry={refresh} />;
 
-  const topProcessesByVolume = data?.statsByProcess.slice(0, 10) || [];
+  const topProcessesByVolumeParentPartNumbers =
+    data?.statsByProcess.slice(0, 10) || [];
 
   return (
     <div className="p-4 bg-slate-50 min-h-screen">
@@ -59,11 +60,14 @@ export const PartNumbersByProcessIndex = () => {
 
         <KpiCard
           title="Mayor Carga"
-          value={topProcessesByVolume[0]?.nPartes?.toLocaleString() ?? "0"}
+          value={
+            topProcessesByVolumeParentPartNumbers[0]?.nPartes?.toLocaleString() ??
+            "0"
+          }
           icon={<Settings size={20} />}
           trend={
-            topProcessesByVolume[0]?.name
-              ? `${topProcessesByVolume[0].name.substring(0, 10)}...`
+            topProcessesByVolumeParentPartNumbers[0]?.name
+              ? `${topProcessesByVolumeParentPartNumbers[0].name.substring(0, 10)}...`
               : "N/A"
           }
           trendColor="text-amber-600"
@@ -79,7 +83,7 @@ export const PartNumbersByProcessIndex = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="lg:col-span-2">
-          <DistributionBarChart data={topProcessesByVolume} />
+          <DistributionBarChart data={topProcessesByVolumeParentPartNumbers} />
         </div>
       </div>
     </div>

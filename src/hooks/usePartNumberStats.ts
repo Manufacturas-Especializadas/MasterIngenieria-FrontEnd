@@ -11,7 +11,8 @@ export const usePartNumberStats = () => {
     try {
       setLoading(true);
 
-      const response = await partNumbersByProcessService.getDashboardStats();
+      const response =
+        await partNumbersByProcessService.getParentPartNumbersDashboardStats();
 
       console.log("Datos: ", response);
       const sortedStats = [...response.statsByProcess].sort(
