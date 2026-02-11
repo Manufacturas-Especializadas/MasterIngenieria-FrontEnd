@@ -12,6 +12,7 @@ export const API_CONFIG = {
         "/api/PartNumbersByProcess/Dashboard-parentPartNumbers",
       getChildPartNumbers:
         "/api/PartNumbersByProcess/Dashboard-childPartNumbers",
+      getKpiStats: "/api/PartNumbersByProcess/Kpi-stats",
     },
   },
 };
