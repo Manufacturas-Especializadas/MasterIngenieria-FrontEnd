@@ -88,7 +88,10 @@ export const PartNumbersByProcessIndex = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="lg:col-span-2">
-          <DistributionBarChart data={topProcessesByVolumeParentPartNumbers} />
+          <DistributionBarChart
+            data={topProcessesByVolumeParentPartNumbers}
+            title="Distribución de N/P Padre por proceso"
+          />
         </div>
         <div className="lg:col-span-2">
           <DistributionBarChart
