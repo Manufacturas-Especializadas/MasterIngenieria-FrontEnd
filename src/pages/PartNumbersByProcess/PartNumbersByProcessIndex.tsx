@@ -7,18 +7,25 @@ import {
 } from "lucide-react";
 import { KpiCard } from "../../components/KpiCard/KpiCard";
 import { DistributionBarChart } from "../../components/ProcessCharts/ProcessCharts";
-import { usePartNumberStats } from "../../hooks/usePartNumberStats";
+import { useParentPartNumberStats } from "../../hooks/useParentPartNumberStats";
 import { LoadingSkeleton } from "../../components/LoadingSkeleton/LoadingSkeleton";
 import { ErrorState } from "../../components/ErrorState/ErrorState";
+import { useChildPartNumbers } from "../../hooks/useChildPartNumbers";
+import { useKpiStats } from "../../hooks/useKpiStats";
 
 export const PartNumbersByProcessIndex = () => {
-  const { data, loading, error, refresh } = usePartNumberStats();
+  const { data, loading, error, refresh } = useParentPartNumberStats();
+  const { data: datChild } = useChildPartNumbers();
+  const { data: kpis } = useKpiStats();
 
   if (loading) return <LoadingSkeleton />;
   if (error) return <ErrorState message={error} onRetry={refresh} />;
 
   const topProcessesByVolumeParentPartNumbers =
     data?.statsByProcess.slice(0, 10) || [];
+
+  const topProcessesByVolumeChildPartNumbers =
+    datChild?.statsByProcess.slice(0, 10) || [];
 
   return (
     <div className="p-4 bg-slate-50 min-h-screen">
@@ -51,8 +58,8 @@ export const PartNumbersByProcessIndex = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
         <KpiCard
-          title="Total N/P"
-          value={data?.totalPartNumber?.toLocaleString() || "0"}
+          title="Total N/P (Padre/Hijo)"
+          value={kpis?.totalUniqueParts?.toLocaleString() ?? "0"}
           icon={<Package size={20} />}
           trend="Global"
           trendColor="text-blue-600"
@@ -60,30 +67,36 @@ export const PartNumbersByProcessIndex = () => {
 
         <KpiCard
           title="Mayor Carga"
-          value={
-            topProcessesByVolumeParentPartNumbers[0]?.nPartes?.toLocaleString() ??
-            "0"
-          }
+          value={kpis?.maxProcessLoad?.toLocaleString() ?? "0"}
           icon={<Settings size={20} />}
           trend={
-            topProcessesByVolumeParentPartNumbers[0]?.name
-              ? `${topProcessesByVolumeParentPartNumbers[0].name.substring(0, 10)}...`
+            kpis?.maxProcessName
+              ? `${kpis.maxProcessName.substring(0, 10)}...`
               : "N/A"
           }
           trendColor="text-amber-600"
         />
         <KpiCard
           title="Procesos"
-          value={data?.statsByProcess.length || 0}
+          value={kpis?.totalProcessesCount?.toLocaleString() ?? "0"}
           icon={<AlertCircle size={20} />}
-          trend="Activos"
+          trend="Registros"
           trendColor="text-red-600"
         />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="lg:col-span-2">
-          <DistributionBarChart data={topProcessesByVolumeParentPartNumbers} />
+          <DistributionBarChart
+            data={topProcessesByVolumeParentPartNumbers}
+            title="Distribución de N/P Padre por proceso"
+          />
+        </div>
+        <div className="lg:col-span-2">
+          <DistributionBarChart
+            data={topProcessesByVolumeChildPartNumbers}
+            title="Distribución de N/P Hijo por proceso"
+          />
         </div>
       </div>
     </div>

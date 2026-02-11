@@ -7,8 +7,12 @@ if (!API_BASE_URL) {
 export const API_CONFIG = {
   baseUrl: API_BASE_URL,
   endpoints: {
-    partNumberByProcess: {
-      dashboardStats: "/api/PartNumbersByProcess/Dashboard-parentPartNumbers",
+    partNumbersByProcess: {
+      getParentPartNumbers:
+        "/api/PartNumbersByProcess/Dashboard-parentPartNumbers",
+      getChildPartNumbers:
+        "/api/PartNumbersByProcess/Dashboard-childPartNumbers",
+      getKpiStats: "/api/PartNumbersByProcess/Kpi-stats",
     },
   },
 };
