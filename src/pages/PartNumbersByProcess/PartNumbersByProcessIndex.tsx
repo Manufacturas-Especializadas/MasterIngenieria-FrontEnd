@@ -10,15 +10,20 @@ import { DistributionBarChart } from "../../components/ProcessCharts/ProcessChar
 import { useParentPartNumberStats } from "../../hooks/useParentPartNumberStats";
 import { LoadingSkeleton } from "../../components/LoadingSkeleton/LoadingSkeleton";
 import { ErrorState } from "../../components/ErrorState/ErrorState";
+import { useChildPartNumbers } from "../../hooks/useChildPartNumbers";
 
 export const PartNumbersByProcessIndex = () => {
   const { data, loading, error, refresh } = useParentPartNumberStats();
+  const { data: datChild } = useChildPartNumbers();
 
   if (loading) return <LoadingSkeleton />;
   if (error) return <ErrorState message={error} onRetry={refresh} />;
 
   const topProcessesByVolumeParentPartNumbers =
     data?.statsByProcess.slice(0, 10) || [];
+
+  const topProcessesByVolumeChildPartNumbers =
+    datChild?.statsByProcess.slice(0, 10) || [];
 
   return (
     <div className="p-4 bg-slate-50 min-h-screen">
@@ -84,6 +89,12 @@ export const PartNumbersByProcessIndex = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="lg:col-span-2">
           <DistributionBarChart data={topProcessesByVolumeParentPartNumbers} />
+        </div>
+        <div className="lg:col-span-2">
+          <DistributionBarChart
+            data={topProcessesByVolumeChildPartNumbers}
+            title="Distribución de N/P Hijo por proceso"
+          />
         </div>
       </div>
     </div>
