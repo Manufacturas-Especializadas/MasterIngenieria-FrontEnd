@@ -10,6 +10,8 @@ export const API_CONFIG = {
     partNumbersByProcess: {
       getParentPartNumbers:
         "/api/PartNumbersByProcess/Dashboard-parentPartNumbers",
+      getChildPartNumbers:
+        "/api/PartNumbersByProcess/Dashboard-childPartNumbers",
     },
   },
 };
