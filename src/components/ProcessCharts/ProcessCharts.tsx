@@ -24,14 +24,13 @@ const COLORS = [
 ];
 
 interface ChartProps {
+  title?: string;
   data: ProcessData[];
 }
 
-export const DistributionBarChart: React.FC<ChartProps> = ({ data }) => (
+export const DistributionBarChart: React.FC<ChartProps> = ({ data, title }) => (
   <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm h-full">
-    <h3 className="text-lg font-semibold text-slate-700 mb-6">
-      Distribución de N/P por Proceso
-    </h3>
+    <h3 className="text-lg font-semibold text-slate-700 mb-6">{title}</h3>
     <div className="h-96 w-full">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
