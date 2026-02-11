@@ -1,10 +1,4 @@
-import {
-  AlertCircle,
-  FileDown,
-  Package,
-  RefreshCcw,
-  Settings,
-} from "lucide-react";
+import { AlertCircle, Package, RefreshCcw, Settings } from "lucide-react";
 import { KpiCard } from "../../components/KpiCard/KpiCard";
 import { DistributionBarChart } from "../../components/ProcessCharts/ProcessCharts";
 import { useParentPartNumberStats } from "../../hooks/useParentPartNumberStats";
@@ -39,13 +33,6 @@ export const PartNumbersByProcessIndex = () => {
           </p>
         </div>
         <div className="flex gap-3">
-          <button
-            className="flex items-center gap-2 px-4 py-2 bg-white border 
-          border-slate-200 rounded-lg text-sm font-medium text-slate-600
-            hover:bg-slate-50 transition-all shadow-sm hover:cursor-pointer"
-          >
-            <FileDown size={16} /> Exportar
-          </button>
           <button
             className="flex items-center gap-2 px-4 py-2 bg-blue-700 text-white 
             rounded-lg text-sm font-medium hover:bg-blue-800 transition-all 
