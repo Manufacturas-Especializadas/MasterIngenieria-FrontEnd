@@ -28,3 +28,11 @@ export interface DashboardStats {
   totalPartNumber: number;
   statsByProcess: ProcessStats[];
 }
+
+export interface KpiStats {
+  totalUniqueParts: number;
+  maxProcessLoad: number;
+  maxProcessName: string;
+  totalProcessesCount: number;
+  statsByProcess: ProcessData[];
+}
