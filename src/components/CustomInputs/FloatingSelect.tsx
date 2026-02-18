@@ -37,8 +37,8 @@ export const FloatingSelect = ({ label, options, value, onChange }: Props) => {
         onClick={() => setOpen(!open)}
         className={`
         peer w-full text-left bg-gray-50 border-0 border-b transition-colors duration-300
-        px-4 pt-3 pb-2 text-sm text-gray-900 focus:outline-none
-        min-h-14
+        px-4 pt-2 pb-2 text-sm text-gray-900 focus:outline-none
+        min-h-12
         flex items-end
         ${open ? "border-blue-600" : "border-gray-300"}
       `}

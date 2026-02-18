@@ -1,10 +1,4 @@
-import {
-  AlertCircle,
-  FileDown,
-  Package,
-  RefreshCcw,
-  Settings,
-} from "lucide-react";
+import { AlertCircle, Package, RefreshCcw, Settings } from "lucide-react";
 import { KpiCard } from "../../components/KpiCard/KpiCard";
 import { DistributionBarChart } from "../../components/ProcessCharts/ProcessCharts";
 import { useParentPartNumberStats } from "../../hooks/useParentPartNumberStats";
@@ -12,11 +6,22 @@ import { LoadingSkeleton } from "../../components/LoadingSkeleton/LoadingSkeleto
 import { ErrorState } from "../../components/ErrorState/ErrorState";
 import { useChildPartNumbers } from "../../hooks/useChildPartNumbers";
 import { useKpiStats } from "../../hooks/useKpiStats";
+import { Input } from "../../components/CustomInputs/Input";
+import { FloatingSelect } from "../../components/CustomInputs/FloatingSelect";
+import { useState } from "react";
 
 export const PartNumbersByProcessIndex = () => {
+  const [selectedProcess, setSelectedProcess] = useState("");
+
   const { data, loading, error, refresh } = useParentPartNumberStats();
   const { data: datChild } = useChildPartNumbers();
   const { data: kpis } = useKpiStats();
+
+  const processOptions =
+    data?.statsByProcess.map((p) => ({
+      label: p.name,
+      value: p.name,
+    })) || [];
 
   if (loading) return <LoadingSkeleton />;
   if (error) return <ErrorState message={error} onRetry={refresh} />;
@@ -39,13 +44,6 @@ export const PartNumbersByProcessIndex = () => {
           </p>
         </div>
         <div className="flex gap-3">
-          <button
-            className="flex items-center gap-2 px-4 py-2 bg-white border 
-          border-slate-200 rounded-lg text-sm font-medium text-slate-600
-            hover:bg-slate-50 transition-all shadow-sm hover:cursor-pointer"
-          >
-            <FileDown size={16} /> Exportar
-          </button>
           <button
             className="flex items-center gap-2 px-4 py-2 bg-blue-700 text-white 
             rounded-lg text-sm font-medium hover:bg-blue-800 transition-all 
@@ -85,6 +83,35 @@ export const PartNumbersByProcessIndex = () => {
         />
       </div>
 
+      <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm mb-8">
+        <div className="flex flex-col md:flex-row gap-6 items-end">
+          <div className="flex-1 w-full">
+            <Input label="N/P Padre" />
+          </div>
+          <div className="flex-1 w-full">
+            <Input label="N/P Hijo" />
+          </div>
+          <div className="flex-1 w-full">
+            <FloatingSelect
+              label="Filtrar por proceso"
+              options={processOptions}
+              value={selectedProcess}
+              onChange={(val) => setSelectedProcess(val)}
+            />
+          </div>
+          <div className="md:w-auto w-full">
+            <button
+              onClick={() => {
+                setSelectedProcess("");
+              }}
+              className="px-4 py-3 text-sm font-medium text-blue-600 
+              hover:text-blue-800 transition-colors hover:cursor-pointer"
+            >
+              Limpiar filtros
+            </button>
+          </div>
+        </div>
+      </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="lg:col-span-2">
           <DistributionBarChart
