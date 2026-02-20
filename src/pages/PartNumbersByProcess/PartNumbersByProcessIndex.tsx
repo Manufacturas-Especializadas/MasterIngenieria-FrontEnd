@@ -12,9 +12,16 @@ import { useState } from "react";
 
 export const PartNumbersByProcessIndex = () => {
   const [selectedProcess, setSelectedProcess] = useState("");
+  const [filterParent, setFilterParent] = useState("");
+  const [filterChild, setFilterChild] = useState("");
+  const filters = {
+    parentPartNumber: filterParent,
+    childPartNumber: filterChild,
+    process: selectedProcess,
+  };
 
-  const { data, loading, error, refresh } = useParentPartNumberStats();
-  const { data: datChild } = useChildPartNumbers();
+  const { data, loading, error, refresh } = useParentPartNumberStats(filters);
+  const { data: datChild } = useChildPartNumbers(filters);
   const { data: kpis } = useKpiStats();
 
   const processOptions =
@@ -86,10 +93,18 @@ export const PartNumbersByProcessIndex = () => {
       <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm mb-8">
         <div className="flex flex-col md:flex-row gap-6 items-end">
           <div className="flex-1 w-full">
-            <Input label="N/P Padre" />
+            <Input
+              label="N/P Padre"
+              value={filterParent}
+              onChange={(e) => setFilterParent(e.target.value)}
+            />
           </div>
           <div className="flex-1 w-full">
-            <Input label="N/P Hijo" />
+            <Input
+              label="N/P Hijo"
+              value={filterChild}
+              onChange={(e) => setFilterChild(e.target.value)}
+            />
           </div>
           <div className="flex-1 w-full">
             <FloatingSelect

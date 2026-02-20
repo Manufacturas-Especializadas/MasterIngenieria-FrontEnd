@@ -36,3 +36,9 @@ export interface KpiStats {
   totalProcessesCount: number;
   statsByProcess: ProcessData[];
 }
+
+export interface PartNumberFilters {
+  parentPartNumber?: string;
+  childPartNumber?: string;
+  process?: string;
+}
