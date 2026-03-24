@@ -15,7 +15,6 @@ import {
 } from "recharts";
 import type { ProcessData } from "../../types/Types";
 
-// Colores más modernos y vibrantes (Paleta Slate + Blue)
 const COLORS = [
   "#2563eb",
   "#3b82f6",
@@ -25,7 +24,6 @@ const COLORS = [
   "#dbeafe",
 ];
 
-// Tooltip Personalizado con estilo de tu Modal
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
@@ -70,7 +68,6 @@ export const DistributionBarChart: React.FC<ChartProps> = ({ data, title }) => (
           layout="vertical"
           margin={{ left: 40, right: 20, top: 10, bottom: 10 }}
         >
-          {/* Definición de gradiente para las barras */}
           <defs>
             <linearGradient id="barGradient" x1="0" y1="0" x2="1" y2="0">
               <stop offset="0%" stopColor="#1e40af" />
