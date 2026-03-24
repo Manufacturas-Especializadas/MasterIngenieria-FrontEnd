@@ -1,5 +1,11 @@
-import { AlertCircle, Package, RefreshCcw, Settings } from "lucide-react";
-import { KpiCard } from "../../components/KpiCard/KpiCard";
+import {
+  AlertCircle,
+  Package,
+  RefreshCcw,
+  Settings,
+  FilterX,
+  BarChart3,
+} from "lucide-react";
 import { DistributionBarChart } from "../../components/ProcessCharts/ProcessCharts";
 import { useParentPartNumberStats } from "../../hooks/useParentPartNumberStats";
 import { LoadingSkeleton } from "../../components/LoadingSkeleton/LoadingSkeleton";
@@ -9,11 +15,13 @@ import { useKpiStats } from "../../hooks/useKpiStats";
 import { Input } from "../../components/CustomInputs/Input";
 import { FloatingSelect } from "../../components/CustomInputs/FloatingSelect";
 import { useState } from "react";
+import { KpiCard } from "../../components/KpiCard/KpiCard";
 
 export const PartNumbersByProcessIndex = () => {
   const [selectedProcess, setSelectedProcess] = useState("");
   const [filterParent, setFilterParent] = useState("");
   const [filterChild, setFilterChild] = useState("");
+
   const filters = {
     parentPartNumber: filterParent,
     childPartNumber: filterChild,
@@ -24,121 +32,132 @@ export const PartNumbersByProcessIndex = () => {
   const { data: datChild } = useChildPartNumbers(filters);
   const { data: kpis } = useKpiStats();
 
+  if (loading) return <LoadingSkeleton />;
+  if (error) return <ErrorState message={error} onRetry={refresh} />;
+
   const processOptions =
     data?.statsByProcess.map((p) => ({
       label: p.name,
       value: p.name,
     })) || [];
 
-  if (loading) return <LoadingSkeleton />;
-  if (error) return <ErrorState message={error} onRetry={refresh} />;
-
   const topProcessesByVolumeParentPartNumbers =
     data?.statsByProcess.slice(0, 10) || [];
-
   const topProcessesByVolumeChildPartNumbers =
     datChild?.statsByProcess.slice(0, 10) || [];
 
   return (
-    <div className="p-4 bg-slate-50 min-h-screen">
-      <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-800 tracking-tight">
-            Números de parte por procesos
-          </h1>
-          <p className="text-slate-500 text-sm italic">
-            Master de Ingeniería Industrial - MESA
-          </p>
-        </div>
-        <div className="flex gap-3">
+    <div
+      className="min-h-screen bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] 
+      background-size-[16px_16px] bg-slate-50/50 p-4 lg:p-8"
+    >
+      <div className="max-w-7xl mx-auto">
+        <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2 text-blue-600 font-semibold text-sm uppercase tracking-wider">
+              <BarChart3 size={16} />
+              <span>Dashboard Analítico</span>
+            </div>
+            <h1 className="text-3xl font-bold text-slate-900 tracking-tight">
+              Números de Parte{" "}
+              <span className="text-slate-500 font-medium">por Procesos</span>
+            </h1>
+          </div>
+
           <button
-            className="flex items-center gap-2 px-4 py-2 bg-blue-700 text-white 
-            rounded-lg text-sm font-medium hover:bg-blue-800 transition-all 
-            shadow-md hover:cursor-pointer"
+            onClick={refresh}
+            className="flex items-center justify-center gap-2 px-5 py-2.5 
+            bg-white border border-slate-200 text-slate-700 rounded-xl 
+            text-sm font-semibold hover:bg-slate-50 hover:border-slate-300 
+            transition-all shadow-sm active:scale-95 hover:cursor-pointer"
           >
-            <RefreshCcw size={16} /> Actualizar
+            <RefreshCcw size={16} className="text-blue-600" />
+            Actualizar Datos
           </button>
         </div>
-      </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        <KpiCard
-          title="Total N/P (Padre/Hijo)"
-          value={kpis?.totalUniqueParts?.toLocaleString() ?? "0"}
-          icon={<Package size={20} />}
-          trend="Global"
-          trendColor="text-blue-600"
-        />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <KpiCard
+            title="Total N/P (Padre/Hijo)"
+            value={kpis?.totalUniqueParts?.toLocaleString() ?? "0"}
+            icon={<Package className="text-blue-600" />}
+            trend="Global"
+            trendColor={"text-green-600"}
+          />
+          <KpiCard
+            title="Mayor Carga"
+            value={kpis?.maxProcessLoad?.toLocaleString() ?? "0"}
+            icon={<Settings className="text-amber-500" />}
+            trend={kpis?.maxProcessName?.substring(0, 15) || "N/A"}
+            trendColor={"text-green-600"}
+          />
+          <KpiCard
+            title="Procesos Activos"
+            value={kpis?.totalProcessesCount?.toLocaleString() ?? "0"}
+            icon={<AlertCircle className="text-indigo-500" />}
+            trend="Registros"
+            trendColor={"text-green-600"}
+          />
+        </div>
 
-        <KpiCard
-          title="Mayor Carga"
-          value={kpis?.maxProcessLoad?.toLocaleString() ?? "0"}
-          icon={<Settings size={20} />}
-          trend={
-            kpis?.maxProcessName
-              ? `${kpis.maxProcessName.substring(0, 10)}...`
-              : "N/A"
-          }
-          trendColor="text-amber-600"
-        />
-        <KpiCard
-          title="Procesos"
-          value={kpis?.totalProcessesCount?.toLocaleString() ?? "0"}
-          icon={<AlertCircle size={20} />}
-          trend="Registros"
-          trendColor="text-red-600"
-        />
-      </div>
+        <div
+          className="bg-white/70 backdrop-blur-sm p-6 rounded-2xl border 
+          border-slate-200 shadow-sm mb-8 transition-all hover:shadow-md"
+        >
+          <div className="flex items-center gap-2 mb-6 text-slate-800 font-bold">
+            <div className="w-1 h-5 bg-blue-600 rounded-full" />
+            <h2>Filtros de búsqueda</h2>
+          </div>
 
-      <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm mb-8">
-        <div className="flex flex-col md:flex-row gap-6 items-end">
-          <div className="flex-1 w-full">
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 items-end">
             <Input
               label="N/P Padre"
+              placeholder="Ej: 12345..."
               value={filterParent}
               onChange={(e) => setFilterParent(e.target.value)}
             />
-          </div>
-          <div className="flex-1 w-full">
             <Input
               label="N/P Hijo"
+              placeholder="Buscar componente..."
               value={filterChild}
               onChange={(e) => setFilterChild(e.target.value)}
             />
-          </div>
-          <div className="flex-1 w-full">
             <FloatingSelect
-              label="Filtrar por proceso"
+              label="Proceso Específico"
               options={processOptions}
               value={selectedProcess}
               onChange={(val) => setSelectedProcess(val)}
             />
-          </div>
-          <div className="md:w-auto w-full">
+
             <button
               onClick={() => {
                 setSelectedProcess("");
+                setFilterParent("");
+                setFilterChild("");
               }}
-              className="px-4 py-3 text-sm font-medium text-blue-600 
-              hover:text-blue-800 transition-colors hover:cursor-pointer"
+              className="flex items-center justify-center gap-2 px-4 py-3 text-sm 
+              font-bold text-slate-500 hover:text-red-500 transition-colors group
+              hover:cursor-pointer"
             >
+              <FilterX size={18} className="group-hover:animate-pulse" />
               Limpiar filtros
             </button>
           </div>
         </div>
-      </div>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="lg:col-span-2">
-          <DistributionBarChart
-            data={topProcessesByVolumeParentPartNumbers}
-            title="Distribución de N/P Padre por proceso"
-          />
-        </div>
-        <div className="lg:col-span-2">
-          <DistributionBarChart
-            data={topProcessesByVolumeChildPartNumbers}
-            title="Distribución de N/P Hijo por proceso"
-          />
+
+        <div className="grid grid-cols-1 gap-8">
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <DistributionBarChart
+              data={topProcessesByVolumeParentPartNumbers}
+              title="Distribución de N/P Padre por proceso"
+            />
+          </div>
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <DistributionBarChart
+              data={topProcessesByVolumeChildPartNumbers}
+              title="Distribución de N/P Hijo por proceso"
+            />
+          </div>
         </div>
       </div>
     </div>
