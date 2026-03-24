@@ -38,7 +38,6 @@ export const Navbar = () => {
             ))}
           </nav>
 
-          {/* DERECHA (RESERVADO) */}
           <div className="min-w-fit text-white/80 text-sm">
             {/* Usuario / acciones futuras */}
           </div>
