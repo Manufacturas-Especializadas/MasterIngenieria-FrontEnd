@@ -7,6 +7,9 @@ if (!API_BASE_URL) {
 export const API_CONFIG = {
   baseUrl: API_BASE_URL,
   endpoints: {
+    metrics: {
+      topCycleTimes: "/api/Metrics/top-cycle-times/",
+    },
     partNumbersByProcess: {
       getParentPartNumbers:
         "/api/PartNumbersByProcess/Dashboard-parentPartNumbers",
