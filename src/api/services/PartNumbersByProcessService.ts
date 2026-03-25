@@ -1,5 +1,9 @@
 import { API_CONFIG } from "../../config/api";
-import type { DashboardStats, KpiStats } from "../../types/Types";
+import type {
+  DashboardStats,
+  KpiStats,
+  PartNumberFilters,
+} from "../../types/Types";
 import { apiClient } from "../client";
 
 class PartNumbersByProcessService {
@@ -12,14 +16,42 @@ class PartNumbersByProcessService {
   private getKpiStatsEndpoint =
     API_CONFIG.endpoints.partNumbersByProcess.getKpiStats;
 
-  async getParentPartNumbersDashboardStats(): Promise<DashboardStats> {
+  private buildQueryParams(filters?: PartNumberFilters) {
+    if (!filters) return "";
+
+    const params = new URLSearchParams();
+
+    if (filters.parentPartNumber) {
+      params.append("parentPartNumber", filters.parentPartNumber);
+    }
+
+    if (filters.childPartNumber) {
+      params.append("childPartNumber", filters.childPartNumber);
+    }
+
+    if (filters.process) {
+      params.append("process", filters.process);
+    }
+
+    const queryString = params.toString();
+
+    return queryString ? `?${queryString}` : "";
+  }
+
+  async getParentPartNumbersDashboardStats(
+    filters?: PartNumberFilters,
+  ): Promise<DashboardStats> {
     return apiClient.get<DashboardStats>(
-      this.getParentPartNumbersDashboardStatsEndpoint,
+      `${this.getParentPartNumbersDashboardStatsEndpoint}${this.buildQueryParams(filters)}`,
     );
   }
 
-  async getChildPartNumbers(): Promise<DashboardStats> {
-    return apiClient.get<DashboardStats>(this.getChildPartNumbersEndpoint);
+  async getChildPartNumbers(
+    filters?: PartNumberFilters,
+  ): Promise<DashboardStats> {
+    return apiClient.get<DashboardStats>(
+      `${this.getChildPartNumbersEndpoint}${this.buildQueryParams(filters)}`,
+    );
   }
 
   async getKpiStats(): Promise<KpiStats> {

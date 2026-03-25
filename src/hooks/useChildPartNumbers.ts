@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import type { DashboardStats } from "../types/Types";
+import type { DashboardStats, PartNumberFilters } from "../types/Types";
 import { partNumbersByProcessService } from "../api/services/PartNumbersByProcessService";
 
-export const useChildPartNumbers = () => {
+export const useChildPartNumbers = (filters?: PartNumberFilters) => {
   const [data, setData] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -11,7 +11,8 @@ export const useChildPartNumbers = () => {
     try {
       setLoading(true);
 
-      const response = await partNumbersByProcessService.getChildPartNumbers();
+      const response =
+        await partNumbersByProcessService.getChildPartNumbers(filters);
 
       const sorted = [...response.statsByProcess].sort(
         (a, b) => b.nPartes - a.nPartes,
@@ -31,7 +32,7 @@ export const useChildPartNumbers = () => {
   };
   useEffect(() => {
     fetchStats();
-  }, []);
+  }, [filters?.parentPartNumber, filters?.childPartNumber, filters?.process]);
 
   return { data, loading, error, refresh: fetchStats };
 };
