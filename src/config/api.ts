@@ -9,6 +9,7 @@ export const API_CONFIG = {
   endpoints: {
     metrics: {
       topCycleTimes: "/api/Metrics/top-cycle-times/",
+      getLines: "/api/Metrics/lines",
     },
     partNumbersByProcess: {
       getParentPartNumbers:

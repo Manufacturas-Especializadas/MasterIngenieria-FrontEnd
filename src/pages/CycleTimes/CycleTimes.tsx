@@ -1,10 +1,18 @@
 import { Timer, Trophy, Activity, AlertCircle, Loader2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTopCycleTimes } from "../../hooks/useTopCycleTimes";
+import { useLines } from "../../hooks/useLines";
 
 export const CycleTimes = () => {
-  const [line, setLine] = useState(1);
-  const { data, isLoading, error } = useTopCycleTimes(line);
+  const [selectedLine, setSelectedLine] = useState<number>(0);
+  const { line, isLoadingLines } = useLines();
+  const { data, isLoading, error } = useTopCycleTimes(selectedLine);
+
+  useEffect(() => {
+    if (line.length > 0 && selectedLine === 0) {
+      setSelectedLine(line[0]);
+    }
+  }, [line, selectedLine]);
 
   const maxCiclo = data.length > 0 ? data[0].tCiclo : 1;
 
@@ -23,17 +31,22 @@ export const CycleTimes = () => {
           </p>
         </div>
         <select
-          value={line}
-          onChange={(e) => setLine(Number(e.target.value))}
+          disabled={isLoadingLines}
+          value={selectedLine}
+          onChange={(e) => setSelectedLine(Number(e.target.value))}
           className="px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl 
           font-semibold text-slate-700 outline-none focus:ring-2 focus:ring-blue-500 
           transition-all cursor-pointer"
         >
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((l) => (
-            <option key={l} value={l}>
-              Línea {l.toString().padStart(2, "0")}
-            </option>
-          ))}
+          {isLoadingLines ? (
+            <option>Cargando líneas...</option>
+          ) : (
+            line.map((l) => (
+              <option key={l} value={l}>
+                Línea {l.toString().padStart(2, "0")}
+              </option>
+            ))
+          )}
         </select>
       </div>
 
