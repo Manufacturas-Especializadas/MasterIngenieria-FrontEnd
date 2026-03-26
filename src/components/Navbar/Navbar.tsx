@@ -4,7 +4,8 @@ import { useState } from "react";
 import Logo from "../../assets/logomesa.png";
 
 const navItems = [
-  { label: "N.P x Procesos", to: "/" },
+  { label: "Tiempos de ciclos", to: "/" },
+  { label: "N.P x Procesos", to: "/numeros-de-parte-por-proceso" },
   { label: "Procesos", to: "/procesos" },
   { label: "Procesos x Linea", to: "/procesos-linea" },
 ];

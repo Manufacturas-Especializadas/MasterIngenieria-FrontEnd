@@ -42,3 +42,10 @@ export interface PartNumberFilters {
   childPartNumber?: string;
   process?: string;
 }
+
+export interface TopCycleTime {
+  partNumber: string;
+  description: string;
+  tCiclo: number;
+  operation: string;
+}
