@@ -1,18 +1,37 @@
-import { Timer, Trophy, Activity, AlertCircle, Loader2 } from "lucide-react";
+import {
+  Timer,
+  Activity,
+  AlertCircle,
+  Loader2,
+  Turtle,
+  RefreshCw,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTopCycleTimes } from "../../hooks/useTopCycleTimes";
 import { useLines } from "../../hooks/useLines";
+import { useSync } from "../../hooks/useSync";
 
 export const CycleTimes = () => {
   const [selectedLine, setSelectedLine] = useState<number>(0);
   const { line, isLoadingLines } = useLines();
-  const { data, isLoading, error } = useTopCycleTimes(selectedLine);
+  const { data, isLoading, error, refetch } = useTopCycleTimes(selectedLine);
+  const { performSync, isSyncing } = useSync();
 
   useEffect(() => {
     if (line.length > 0 && selectedLine === 0) {
       setSelectedLine(line[0]);
     }
   }, [line, selectedLine]);
+
+  const handleSyncClick = async () => {
+    try {
+      await performSync();
+
+      refetch();
+    } catch (err) {
+      console.error("Sync error: ", err);
+    }
+  };
 
   const maxCiclo = data.length > 0 ? data[0].tCiclo : 1;
 
@@ -30,24 +49,49 @@ export const CycleTimes = () => {
             Visualizando los tiempos de ciclo más altos por línea
           </p>
         </div>
-        <select
-          disabled={isLoadingLines}
-          value={selectedLine}
-          onChange={(e) => setSelectedLine(Number(e.target.value))}
-          className="px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl 
-          font-semibold text-slate-700 outline-none focus:ring-2 focus:ring-blue-500 
-          transition-all cursor-pointer"
-        >
-          {isLoadingLines ? (
-            <option>Cargando líneas...</option>
-          ) : (
-            line.map((l) => (
-              <option key={l} value={l}>
-                Línea {l.toString().padStart(2, "0")}
-              </option>
-            ))
-          )}
-        </select>
+
+        <div className="flex items-center gap-3">
+          <button
+            onClick={handleSyncClick}
+            disabled={isSyncing}
+            className={`flex items-center gap-2 px-4 py-2 
+                rounded-xl font-bold text-sm transition-all
+                hover:cursor-pointer
+              ${
+                isSyncing
+                  ? "bg-slate-100 text-slate-400 cursor-wait"
+                  : "bg-slate-900 text-white hover:bg-blue-600 active:scale-95 shadow-md"
+              }`}
+          >
+            {isSyncing ? (
+              <Loader2 className="animate-spin" size={16} />
+            ) : (
+              <RefreshCw size={16} />
+            )}
+            {isSyncing ? "Sincronizando..." : "Actualizar"}
+          </button>
+
+          <div className="h-8 w-px bg-slate-200 mx-2" />
+
+          <select
+            disabled={isLoadingLines}
+            value={selectedLine}
+            onChange={(e) => setSelectedLine(Number(e.target.value))}
+            className="px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl 
+            font-semibold text-slate-700 outline-none focus:ring-2 focus:ring-blue-500 
+            transition-all cursor-pointer"
+          >
+            {isLoadingLines ? (
+              <option>Cargando líneas...</option>
+            ) : (
+              line.map((l) => (
+                <option key={l} value={l}>
+                  Línea {l.toString().padStart(2, "0")}
+                </option>
+              ))
+            )}
+          </select>
+        </div>
       </div>
 
       {isLoading ? (
@@ -81,7 +125,7 @@ export const CycleTimes = () => {
                 </div>
                 <div className="relative z-10">
                   <div className="bg-amber-400/20 text-amber-400 p-2 rounded-lg w-fit mb-4">
-                    <Trophy size={24} />
+                    <Turtle size={24} />
                   </div>
                   <p className="text-slate-400 text-xs font-bold uppercase tracking-widest">
                     Máximo tiempo de ciclo
