@@ -1,13 +1,13 @@
 import { NavLink } from "react-router-dom";
-import { Menu, X } from "lucide-react"; // Para la versión móvil
+import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import Logo from "../../assets/logomesa.png";
 
 const navItems = [
   { label: "Tiempos de ciclos", to: "/" },
   { label: "N.P x Procesos", to: "/numeros-de-parte-por-proceso" },
-  { label: "Procesos", to: "/procesos" },
-  { label: "Procesos x Linea", to: "/procesos-linea" },
+  // { label: "Procesos", to: "/procesos" },
+  // { label: "Procesos x Linea", to: "/procesos-linea" },
 ];
 
 export const Navbar = () => {
