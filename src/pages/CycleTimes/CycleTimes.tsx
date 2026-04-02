@@ -1,4 +1,4 @@
-import { Timer, Trophy, Activity, AlertCircle, Loader2 } from "lucide-react";
+import { Timer, Activity, AlertCircle, Loader2, Turtle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTopCycleTimes } from "../../hooks/useTopCycleTimes";
 import { useLines } from "../../hooks/useLines";
@@ -81,7 +81,7 @@ export const CycleTimes = () => {
                 </div>
                 <div className="relative z-10">
                   <div className="bg-amber-400/20 text-amber-400 p-2 rounded-lg w-fit mb-4">
-                    <Trophy size={24} />
+                    <Turtle size={24} />
                   </div>
                   <p className="text-slate-400 text-xs font-bold uppercase tracking-widest">
                     Máximo tiempo de ciclo
