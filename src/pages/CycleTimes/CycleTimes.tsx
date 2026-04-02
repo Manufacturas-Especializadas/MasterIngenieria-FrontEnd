@@ -5,6 +5,7 @@ import {
   Loader2,
   Turtle,
   RefreshCw,
+  User,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTopCycleTimes } from "../../hooks/useTopCycleTimes";
@@ -26,7 +27,6 @@ export const CycleTimes = () => {
   const handleSyncClick = async () => {
     try {
       await performSync();
-
       refetch();
     } catch (err) {
       console.error("Sync error: ", err);
@@ -135,10 +135,15 @@ export const CycleTimes = () => {
                     <span className="text-xl ml-1 opacity-50">seg</span>
                   </h2>
                 </div>
-                <div className="relative z-10 mt-8">
-                  <p className="text-blue-400 font-mono text-sm">
-                    {data[0].partNumber}
-                  </p>
+                <div className="relative z-10 mt-8 space-y-2">
+                  <div className="flex flex-col">
+                    <p className="text-blue-400 font-mono text-sm font-bold uppercase tracking-wider">
+                      {data[0].partNumber}
+                    </p>
+                    <p className="text-xs text-blue-300/80 font-bold flex items-center gap-1">
+                      <User size={12} /> {data[0].client || "Sin Cliente"}
+                    </p>
+                  </div>
                   <p className="text-slate-200 font-medium line-clamp-2">
                     {data[0].description}
                   </p>
@@ -171,13 +176,21 @@ export const CycleTimes = () => {
                         0{index + 1}
                       </span>
                       <div>
-                        <h4
-                          className="text-sm font-bold text-slate-700 group-hover:text-blue-600 
-                          transition-colors leading-none mb-1"
-                        >
-                          {item.partNumber}
-                        </h4>
-                        <p className="text-xs text-slate-400 font-medium italic">
+                        <div className="flex items-center gap-2">
+                          <h4
+                            className="text-sm font-bold text-slate-700 group-hover:text-blue-600 
+                            transition-colors leading-none"
+                          >
+                            {item.partNumber}
+                          </h4>
+                          <span
+                            className="text-[10px] bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded-md 
+                            font-bold uppercase border border-blue-100"
+                          >
+                            {item.client}
+                          </span>
+                        </div>
+                        <p className="text-xs text-slate-400 font-medium italic mt-1">
                           {item.operation}
                         </p>
                       </div>

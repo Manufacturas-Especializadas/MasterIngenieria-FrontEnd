@@ -45,6 +45,7 @@ export interface PartNumberFilters {
 
 export interface TopCycleTime {
   partNumber: string;
+  client: string;
   description: string;
   tCiclo: number;
   operation: string;
