@@ -1,10 +1,11 @@
 import {
   AlertCircle,
   Package,
-  RefreshCcw,
   Settings,
   FilterX,
   BarChart3,
+  Loader2,
+  RefreshCw,
 } from "lucide-react";
 import { DistributionBarChart } from "../../components/ProcessCharts/ProcessCharts";
 import { useParentPartNumberStats } from "../../hooks/useParentPartNumberStats";
@@ -16,6 +17,7 @@ import { Input } from "../../components/CustomInputs/Input";
 import { FloatingSelect } from "../../components/CustomInputs/FloatingSelect";
 import { useState } from "react";
 import { KpiCard } from "../../components/KpiCard/KpiCard";
+import { useSync } from "../../hooks/useSync";
 
 export const PartNumbersByProcessIndex = () => {
   const [selectedProcess, setSelectedProcess] = useState("");
@@ -29,8 +31,19 @@ export const PartNumbersByProcessIndex = () => {
   };
 
   const { data, loading, error, refresh } = useParentPartNumberStats(filters);
+  const { performSync, isSyncing } = useSync();
   const { data: datChild } = useChildPartNumbers(filters);
   const { data: kpis } = useKpiStats();
+
+  const handleSyncClick = async () => {
+    try {
+      await performSync();
+
+      refresh();
+    } catch (err) {
+      console.error("Sync error: ", err);
+    }
+  };
 
   if (loading) return <LoadingSkeleton />;
   if (error) return <ErrorState message={error} onRetry={refresh} />;
@@ -65,14 +78,23 @@ export const PartNumbersByProcessIndex = () => {
           </div>
 
           <button
-            onClick={refresh}
-            className="flex items-center justify-center gap-2 px-5 py-2.5 
-            bg-white border border-slate-200 text-slate-700 rounded-xl 
-            text-sm font-semibold hover:bg-slate-50 hover:border-slate-300 
-            transition-all shadow-sm active:scale-95 hover:cursor-pointer"
+            onClick={handleSyncClick}
+            disabled={isSyncing}
+            className={`flex items-center gap-2 px-4 py-2 
+                rounded-xl font-bold text-sm transition-all
+                hover:cursor-pointer
+              ${
+                isSyncing
+                  ? "bg-slate-100 text-slate-400 cursor-wait"
+                  : "bg-slate-900 text-white hover:bg-blue-600 active:scale-95 shadow-md"
+              }`}
           >
-            <RefreshCcw size={16} className="text-blue-600" />
-            Actualizar Datos
+            {isSyncing ? (
+              <Loader2 className="animate-spin" size={16} />
+            ) : (
+              <RefreshCw size={16} />
+            )}
+            {isSyncing ? "Sincronizando..." : "Actualizar"}
           </button>
         </div>
 
