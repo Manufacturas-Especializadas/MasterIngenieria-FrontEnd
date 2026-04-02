@@ -49,3 +49,11 @@ export interface TopCycleTime {
   tCiclo: number;
   operation: string;
 }
+
+export interface Sync {
+  success: boolean;
+  totalRecords: number;
+  message: string;
+  executionTimeSeconds: number;
+  syncDate: string;
+}
