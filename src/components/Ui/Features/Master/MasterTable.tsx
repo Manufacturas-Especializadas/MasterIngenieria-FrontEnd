@@ -5,6 +5,12 @@ const MasterTable = ({
 }: {
   onSelectPart: (part: any) => void;
 }) => {
+  const samplePart = {
+    parentPartNumber: "PN-100",
+    description: "Componente de prueba",
+    client: "Cliente Ejemplo",
+  };
+
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
       <table className="w-full text-left">
@@ -19,23 +25,33 @@ const MasterTable = ({
             <th className="px-4 py-2 text-[11px] font-semibold text-gray-600 uppercase">
               Cliente
             </th>
-            <th className="px-4 py-2 text-[11px] font-semibold text-gray-600 uppercase">
+            <th className="px-4 py-2 text-[11px] font-semibold text-gray-600 uppercase text-center">
               Acción
             </th>
           </tr>
         </thead>
 
         <tbody>
-          <tr className="border-b border-gray-200 hover:bg-gray-100 cursor-pointer">
-            <td className="px-4 py-2 font-mono text-sm text-gray-800">
-              PN-100
+          <tr
+            onClick={() => onSelectPart(samplePart)}
+            className="border-b border-gray-200 hover:bg-blue-50/50 transition-colors cursor-pointer group"
+          >
+            <td className="px-4 py-2 font-mono text-sm text-gray-800 font-medium">
+              {samplePart.parentPartNumber}
             </td>
             <td className="px-4 py-2 text-sm text-gray-700">
-              Componente de prueba
+              {samplePart.description}
             </td>
-            <td className="px-4 py-2 text-sm text-gray-700">Cliente Ejemplo</td>
+            <td className="px-4 py-2 text-sm text-gray-700">
+              {samplePart.client}
+            </td>
             <td className="px-4 py-2 text-center">
-              <ChevronRight size={16} className="text-gray-400" />
+              <div className="flex justify-center">
+                <ChevronRight
+                  size={18}
+                  className="text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all"
+                />
+              </div>
             </td>
           </tr>
         </tbody>
