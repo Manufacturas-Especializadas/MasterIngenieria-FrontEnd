@@ -7,6 +7,9 @@ if (!API_BASE_URL) {
 export const API_CONFIG = {
   baseUrl: API_BASE_URL,
   endpoints: {
+    sync: {
+      masterIndutrial: "/api/Sync/master-industrial",
+    },
     metrics: {
       topCycleTimes: "/api/Metrics/top-cycle-times/",
       getLines: "/api/Metrics/lines",
