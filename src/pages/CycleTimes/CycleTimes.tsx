@@ -4,19 +4,19 @@ import {
   AlertCircle,
   Loader2,
   Turtle,
-  RefreshCw,
+  // RefreshCw,
   User,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTopCycleTimes } from "../../hooks/useTopCycleTimes";
 import { useLines } from "../../hooks/useLines";
-import { useSync } from "../../hooks/useSync";
+// import { useSync } from "../../hooks/useSync";
 
 export const CycleTimes = () => {
   const [selectedLine, setSelectedLine] = useState<number>(0);
   const { line, isLoadingLines } = useLines();
-  const { data, isLoading, error, refetch } = useTopCycleTimes(selectedLine);
-  const { performSync, isSyncing } = useSync();
+  const { data, isLoading, error } = useTopCycleTimes(selectedLine);
+  // const { performSync, isSyncing } = useSync();
 
   useEffect(() => {
     if (line.length > 0 && selectedLine === 0) {
@@ -24,14 +24,14 @@ export const CycleTimes = () => {
     }
   }, [line, selectedLine]);
 
-  const handleSyncClick = async () => {
-    try {
-      await performSync();
-      refetch();
-    } catch (err) {
-      console.error("Sync error: ", err);
-    }
-  };
+  // const handleSyncClick = async () => {
+  //   try {
+  //     await performSync();
+  //     refetch();
+  //   } catch (err) {
+  //     console.error("Sync error: ", err);
+  //   }
+  // };
 
   const maxCiclo = data.length > 0 ? data[0].tCiclo : 1;
 
@@ -51,7 +51,7 @@ export const CycleTimes = () => {
         </div>
 
         <div className="flex items-center gap-3">
-          <button
+          {/* <button
             onClick={handleSyncClick}
             disabled={isSyncing}
             className={`flex items-center gap-2 px-4 py-2 
@@ -69,7 +69,7 @@ export const CycleTimes = () => {
               <RefreshCw size={16} />
             )}
             {isSyncing ? "Sincronizando..." : "Actualizar"}
-          </button>
+          </button> */}
 
           <div className="h-8 w-px bg-slate-200 mx-2" />
 

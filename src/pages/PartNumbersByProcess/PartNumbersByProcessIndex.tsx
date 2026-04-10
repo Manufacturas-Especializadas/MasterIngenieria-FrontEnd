@@ -4,8 +4,8 @@ import {
   Settings,
   FilterX,
   BarChart3,
-  Loader2,
-  RefreshCw,
+  // Loader2,
+  // RefreshCw,
 } from "lucide-react";
 import { DistributionBarChart } from "../../components/ProcessCharts/ProcessCharts";
 import { useParentPartNumberStats } from "../../hooks/useParentPartNumberStats";
@@ -17,7 +17,7 @@ import { Input } from "../../components/CustomInputs/Input";
 import { FloatingSelect } from "../../components/CustomInputs/FloatingSelect";
 import { useState } from "react";
 import { KpiCard } from "../../components/KpiCard/KpiCard";
-import { useSync } from "../../hooks/useSync";
+// import { useSync } from "../../hooks/useSync";
 
 export const PartNumbersByProcessIndex = () => {
   const [selectedProcess, setSelectedProcess] = useState("");
@@ -31,19 +31,19 @@ export const PartNumbersByProcessIndex = () => {
   };
 
   const { data, loading, error, refresh } = useParentPartNumberStats(filters);
-  const { performSync, isSyncing } = useSync();
+  // const { performSync, isSyncing } = useSync();
   const { data: datChild } = useChildPartNumbers(filters);
   const { data: kpis } = useKpiStats();
 
-  const handleSyncClick = async () => {
-    try {
-      await performSync();
+  // const handleSyncClick = async () => {
+  //   try {
+  //     await performSync();
 
-      refresh();
-    } catch (err) {
-      console.error("Sync error: ", err);
-    }
-  };
+  //     refresh();
+  //   } catch (err) {
+  //     console.error("Sync error: ", err);
+  //   }
+  // };
 
   if (loading) return <LoadingSkeleton />;
   if (error) return <ErrorState message={error} onRetry={refresh} />;
@@ -77,7 +77,7 @@ export const PartNumbersByProcessIndex = () => {
             </h1>
           </div>
 
-          <button
+          {/* <button
             onClick={handleSyncClick}
             disabled={isSyncing}
             className={`flex items-center gap-2 px-4 py-2 
@@ -95,7 +95,7 @@ export const PartNumbersByProcessIndex = () => {
               <RefreshCw size={16} />
             )}
             {isSyncing ? "Sincronizando..." : "Actualizar"}
-          </button>
+          </button> */}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
