@@ -51,6 +51,16 @@ export interface TopCycleTime {
   operation: string;
 }
 
+export interface Improvements {
+  parentPartNumber: string;
+  oldCycleTime: number;
+  newCycleTime: number;
+  timeSaved: number;
+  percentImprovement: number;
+  process: string;
+  improvementDate: string;
+}
+
 export interface Sync {
   success: boolean;
   totalRecords: number;
