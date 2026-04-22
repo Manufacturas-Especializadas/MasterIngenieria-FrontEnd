@@ -10,6 +10,7 @@ import {
 import { useEffect, useState } from "react";
 import { useTopCycleTimes } from "../../hooks/useTopCycleTimes";
 import { useLines } from "../../hooks/useLines";
+import { CycleImprovements } from "../../components/CycleImprovements/CycleImprovements";
 // import { useSync } from "../../hooks/useSync";
 
 export const CycleTimes = () => {
@@ -213,6 +214,8 @@ export const CycleTimes = () => {
           </div>
         </div>
       )}
+
+      <CycleImprovements selectedLine={selectedLine} />
     </div>
   );
 };
