@@ -12,6 +12,7 @@ export const API_CONFIG = {
     },
     metrics: {
       topCycleTimes: "/api/Metrics/top-cycle-times/",
+      improvements: "/api/Metrics/improvements/",
       getLines: "/api/Metrics/lines",
     },
     partNumbersByProcess: {
