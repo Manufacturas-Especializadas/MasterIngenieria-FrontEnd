@@ -96,7 +96,7 @@ export const CycleImprovements = ({ selectedLine }: Props) => {
                     className="bg-emerald-500 text-white px-3 py-1 rounded-lg font-black
                     text-sm shadow-sm flex items-center gap-1"
                   >
-                    -{item.percentImprovement}%
+                    {item.percentImprovement}%
                   </div>
                   <p className="text-emerald-600 text-xs font-bold mt-1">
                     Ahorro: {item.timeSaved}s
